@@ -29,7 +29,7 @@ sitename: "Victor Caldas"
 title: "{ V/Caldas }"
 # description: "Blog and website of John Smith, blogging mainly for tech. Opinions expressed are mine."
 # keywords: "smith, jones, personal, jekyll, theme"
-favicon: "/home/img/favicon.ico"
+favicon: "/img/favicon.ico"
 
 ##############################
 # Dynamic Text on the Header #
