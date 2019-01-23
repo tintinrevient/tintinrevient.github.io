@@ -13,8 +13,8 @@ google-tracking-id: ""
 lang: "en"
 author: "Zhao Shu"
 sitename: "Zhao Shu"
-title: "{ V/Shu }"
-favicon: "/img/favicon.ico"
+title: "{ The Adventures of Tinin }"
+favicon: "/assets/img/favicon.ico"
 
 # Contact
 email: "zhaobenben007@googlemail.com"
@@ -55,21 +55,5 @@ exclude:
   - gulp_examples
   - gulp
 
-
-
-# Pagination path
-
-# Build settings
-# paginate: 5
-# paginate_path: "/blog/page:num/"
-# comments: true
-# excerpt_separator: <!-- more -->
-
-
-# paginate_path: "blog/page:num/"
-
-
-
 plugins:
-  # - jekyll-paginate
   - jemoji
