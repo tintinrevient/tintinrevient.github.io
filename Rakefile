@@ -2,7 +2,7 @@ require 'html-proofer'
 
 # Change your GitHub reponame - Basic configurations.
 # Note I deploy to master. Travis deploys to gh-pages!
-GITHUB_REPONAME = "vcaldas/vcaldas.github.io"
+GITHUB_REPONAME = "tintinrevient/tintinrevient.github.io"
 GITHUB_REPO_BRANCH = "source"
 GITHUB_DEPLOY_BRANCH = "master"
 
