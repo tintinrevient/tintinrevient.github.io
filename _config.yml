@@ -32,13 +32,6 @@ linkedin: "https://www.linkedin.com/in/shu1zhao"
 include:
    - _pages
 
-pages_list:
-  About: 'about'
-  Projects: 'projects'
-  Blog: 'latest-post'
-  Publications: 'publications'
-  Contact: 'contact'
-
 # Exclusion list from the generated _site
 exclude:
   - LICENSE
