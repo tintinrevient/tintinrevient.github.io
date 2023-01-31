@@ -29,6 +29,6 @@
     "require-dir": "^0.3.2",
     "run-sequence": "^2.1.0",
     "wiredep": "^4.0.0",
-    "yargs": "^8.0.2"
+    "yargs": "^17.6.2"
   }
 }
