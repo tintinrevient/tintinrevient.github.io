@@ -1,5 +1,11 @@
 # sv
 
+## getting started
+
+```
+npm run dev
+```
+
 ## todo
 
 - [ ] https://github.com/greensock/GSAP
