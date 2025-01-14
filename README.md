@@ -4,6 +4,8 @@
 
 - [ ] https://github.com/greensock/GSAP
 - [ ] https://perspectivetools.com/3-point-perspective
+- [ ] https://github.com/bevyengine/bevy
+- [ ] https://github.com/SanderMertens/flecs
 
 Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
 
