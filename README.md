@@ -6,6 +6,10 @@
 npm run dev
 ```
 
+## ideas
+
+- infinite canvas, like tldraw
+
 ## todo
 
 - [ ] https://github.com/greensock/GSAP
