@@ -14,8 +14,6 @@ npm run dev
 
 - [ ] https://github.com/greensock/GSAP
 - [ ] https://perspectivetools.com/3-point-perspective
-- [ ] https://github.com/bevyengine/bevy
-- [ ] https://github.com/SanderMertens/flecs
 - [ ] https://codepen.io/zhaobenben007/pen/RNwbVmQ
 - [ ] https://creativecodingutrecht.nl/nl
 - [ ] https://www.connorrothschild.com/
