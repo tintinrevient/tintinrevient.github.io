@@ -1,28 +1,29 @@
 <script>
-  import '../app.css'
+  import '../app.css';
 </script>
 
 <div class="nav">
-  <button>logo</button>
-  <button>contact</button>
+  <div>logo</div>
+  <div>contact</div>
 </div>
 
 <style>
-  .nav {
-    display: flex;
-		justify-content: space-between;
-    align-items: center;
+	.nav {
+		display: flex;
+		justify-content: flex-start;
+		gap: 50px;
+		align-items: center;
 		width: 100%;
-		padding: 1rem 0;
+		padding: 1rem 2rem;
 	}
 
-  button {
+	button {
 		padding: 0.5rem;
 		color: white;
 		background: black;
 		border: 1px solid white;
 		cursor: pointer;
-    transition: all, 0.4s;
+		transition: all, 0.4s;
 	}
 
 	button:hover, button.is-active {

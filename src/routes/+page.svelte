@@ -1,5 +1,7 @@
 <script>
-import P5 from 'p5-svelte'
+import P5 from 'p5-svelte';
+import * as d3 from 'd3';
+import { onMount } from 'svelte';
 
 let degX = $state();
 let degY = $state();
@@ -9,6 +11,74 @@ let mouseY = $state();
 
 let width = $state();
 let height = $state();
+
+const topLeftX = 850;
+const topLeftY = 200;
+const size = 300;
+
+const y = 10;
+const strokeColor = "#F4ED36";
+
+onMount(() => {
+    const yScaleFar = d3.scaleLinear().domain([0, y]).range([topLeftY, topLeftY+size]);
+    const yScaleNear = d3.scaleLinear().domain([0, y]).range([0, height]);
+
+    const svg = d3.select("#box")
+        .append("svg")
+            .attr("viewBox", `0, 0, ${width}, ${height}`)
+            .attr("style", "opacity:0.6");
+
+    // Left lines
+    for(let i = 0; i < y + 1; i++) {
+        const x1 = 0;
+        const y1 = yScaleNear(i);
+
+        const x2 = topLeftX;
+        const y2 = yScaleFar(i);
+
+        svg.append("line")
+            .attr("x1", x1)
+            .attr("x2", x2)
+            .attr("y1", y1)
+            .attr("y2", y2)
+            .attr("stroke", strokeColor)
+            .attr("stroke-width", 2);
+    };
+
+    // Right lines
+    // for(let i = 0; i < y + 1; i++) {
+    //     const x1 = width;
+    //     const y1 = yScaleNear(i);
+
+    //     const x2 = topLeftX + size;
+    //     const y2 = yScaleFar(i);
+
+    //     svg.append("line")
+    //         .attr("x1", x1)
+    //         .attr("x2", x2)
+    //         .attr("y1", y1)
+    //         .attr("y2", y2)
+    //         .attr("stroke", strokeColor)
+    //         .attr("stroke-width", 2);
+    // };
+
+    // Center lines
+    for(let i = 0; i < y + 1; i++) {
+        const x1 = topLeftX;
+        const y1 = yScaleFar(i);
+
+        const x2 = width;
+        const y2 = yScaleFar(i);
+
+        svg.append("line")
+            .attr("x1", x1)
+            .attr("x2", x2)
+            .attr("y1", y1)
+            .attr("y2", y2)
+            .attr("stroke", strokeColor)
+            .attr("stroke-width", 2);
+    };
+});
 
 const mousemove = (event) => {
     mouseX = event.pageX;
@@ -43,14 +113,9 @@ const sketch = (p5) => {
     };
 
     p5.draw = () => {
-        // CSS color name
-        // For a list of available color names, see:
-        // https://www.w3.org/wiki/CSS/Properties/color/keywords
-        p5.background("azure");
-
         // Draw left eye
         let leftX = width - 300;
-        let leftY = 100;
+        let leftY = 50;
 
         // Calculate angle between left eye and mouse
         let leftAngle = p5.atan2(mouseY - leftY, mouseX - leftX);
@@ -66,7 +131,7 @@ const sketch = (p5) => {
 
         // Draw right eye
         let rightX = width - 100;
-        let rightY = 100;
+        let rightY = 50;
 
         // Calculate angle between right eye and angle
         let rightAngle = p5.atan2(mouseY - rightY, mouseX - rightX);
@@ -85,6 +150,8 @@ const sketch = (p5) => {
 
 <svelte:window on:mousemove={mousemove} />
 
+<div id="box" style="position: absolute; width: {width}px; height: {height}px;"></div>
+
 <div class="intro" bind:clientWidth={width} bind:clientHeight={height} style="transform: translateZ( -200px ) perspective( 600px ) rotateY( {degY}deg ) rotateX( {degX}deg );">
     <div class="item">I'm Shu</div>
     <div class="item">an AI engineer</div>
@@ -97,9 +164,9 @@ const sketch = (p5) => {
 <style>
     .intro {
         perspective: 800px;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
+        /* width: 100%; */
+        /* height: 100%; */
+        /* overflow: hidden; */
     }
     .item {
         font-size: 12vw;
