@@ -85,7 +85,7 @@ const sketch = (p5) => {
 
 <svelte:window on:mousemove={mousemove} />
 
-<div class="container" bind:clientWidth={width} bind:clientHeight={height} style="transform: translateZ( -200px ) perspective( 600px ) rotateY( {degY}deg ) rotateX( {degX}deg );">
+<div class="intro" bind:clientWidth={width} bind:clientHeight={height} style="transform: translateZ( -200px ) perspective( 600px ) rotateY( {degY}deg ) rotateX( {degX}deg );">
     <div class="item">I'm Shu</div>
     <div class="item">an AI engineer</div>
     <div class="item">I make things</div>
@@ -95,17 +95,12 @@ const sketch = (p5) => {
 <P5 {sketch} />
 
 <style>
-    .container {
-        display: flex;
-        flex-direction: column;
+    .intro {
         perspective: 800px;
-        font-family: "Gill Sans";
-        font-weight: bold;
         width: 100%;
-		height: 100%;
-		overflow: hidden;
+        height: 100%;
+        overflow: hidden;
     }
-
     .item {
         font-size: 12vw;
         font-weight: bold;
@@ -125,5 +120,4 @@ const sketch = (p5) => {
         -webkit-text-stroke-width: 2px;
         -webkit-text-stroke-color: black;
     }
-
 </style>
