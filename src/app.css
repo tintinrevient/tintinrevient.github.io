@@ -1,18 +1,1 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-  
-html,
-body {
-  width: 100%;
-  height: 100%;
-  font-family: "Gill Sans";
-  font-weight: bold;
-  /* background: rgba(129, 199, 132, 0.3); */
-}
-
-#app {
-  overflow: hidden;
-}
+@import "tailwindcss";

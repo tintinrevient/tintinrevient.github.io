@@ -3,91 +3,90 @@ import P5 from 'p5-svelte';
 import * as d3 from 'd3';
 import { onMount } from 'svelte';
 
-let degX = $state();
-let degY = $state();
-
 let mouseX = $state();
 let mouseY = $state();
 
 let width = $state();
 let height = $state();
 
-const topLeftX = 850;
-const topLeftY = 200;
-const size = 300;
-
-const y = 10;
-const strokeColor = "#F4ED36";
+const stroke = "#F4ED36";
+const boxWidth = 3;
 
 onMount(() => {
-    const yScaleFar = d3.scaleLinear().domain([0, y]).range([topLeftY, topLeftY+size]);
-    const yScaleNear = d3.scaleLinear().domain([0, y]).range([0, height]);
-
-    const svg = d3.select("#box")
-        .append("svg")
+    console.log("mounted");
+    const svg = d3.select("#cube")
+         .append("svg")
             .attr("viewBox", `0, 0, ${width}, ${height}`)
-            .attr("style", "opacity:0.6");
+            .style("opacity", "0.5");
 
-    // Left lines
-    for(let i = 0; i < y + 1; i++) {
-        const x1 = 0;
-        const y1 = yScaleNear(i);
+    const box = svg.append("g")
+        .attr("class", "box")
+        .style("opacity", "0.0");
+    
+    box.append("rect")
+        .attr("x", width / 2 + 300)
+        .attr("y", height / 2 - 300)
+        .attr("width", 200)
+        .attr("height", 200)
+        .attr("fill", stroke)
+        .attr("stroke", stroke)
+        .attr("stroke-width", boxWidth);
+    
+    box.append("line")
+        .attr("x1", width / 2)
+        .attr("x2", width / 2 + 300)
+        .attr("y1", height / 2)
+        .attr("y2", height / 2 - 300)
+        .attr("stroke", stroke)
+        .attr("stroke-width", boxWidth);
+    
+    box.append("line")
+        .attr("x1", width / 2)
+        .attr("x2", width / 2 + 300)
+        .attr("y1", height / 2)
+        .attr("y2", height / 2 - 300 + 200)
+        .attr("stroke", stroke)
+        .attr("stroke-width", boxWidth);
 
-        const x2 = topLeftX;
-        const y2 = yScaleFar(i);
+    box.append("line")
+        .attr("x1", width / 2)
+        .attr("x2", width / 2 + 300 + 200)
+        .attr("y1", height / 2)
+        .attr("y2", height / 2 - 300 + 200)
+        .attr("stroke", stroke)
+        .attr("stroke-width", boxWidth);
 
-        svg.append("line")
-            .attr("x1", x1)
-            .attr("x2", x2)
-            .attr("y1", y1)
-            .attr("y2", y2)
-            .attr("stroke", strokeColor)
-            .attr("stroke-width", 2);
-    };
-
-    // Right lines
-    // for(let i = 0; i < y + 1; i++) {
-    //     const x1 = width;
-    //     const y1 = yScaleNear(i);
-
-    //     const x2 = topLeftX + size;
-    //     const y2 = yScaleFar(i);
-
-    //     svg.append("line")
-    //         .attr("x1", x1)
-    //         .attr("x2", x2)
-    //         .attr("y1", y1)
-    //         .attr("y2", y2)
-    //         .attr("stroke", strokeColor)
-    //         .attr("stroke-width", 2);
-    // };
-
-    // Center lines
-    for(let i = 0; i < y + 1; i++) {
-        const x1 = topLeftX;
-        const y1 = yScaleFar(i);
-
-        const x2 = width;
-        const y2 = yScaleFar(i);
-
-        svg.append("line")
-            .attr("x1", x1)
-            .attr("x2", x2)
-            .attr("y1", y1)
-            .attr("y2", y2)
-            .attr("stroke", strokeColor)
-            .attr("stroke-width", 2);
-    };
+    svg.append("g")
+        .attr("class", "circle")
+        .append("circle")
+        .attr("cx", width / 2)
+        .attr("cy", height / 2)
+        .attr("r", 150)
+        .attr("stroke", "red")
+        .attr("stroke-width", 30)
+        .attr("fill", "black");
 });
 
 const mousemove = (event) => {
     mouseX = event.pageX;
-    mouseY = event.pageY;
+    mouseY = event.pageY;       
+}
 
-    console.log(mouseX, mouseY);
+const mouseover = () => {
+    d3.select(".box")
+        .transition()
+        .delay(250)
+        .duration(850)
+        .ease(d3.easeCubicInOut)
+        .style("opacity", "1.0");
+}
 
-    // degX =  -90 + (event.pageY * 90) / (height / 2);
-    // degY = 90 - (event.pageX * 90) / (width / 2);            
+const mouseleave = () => {
+    d3.select(".box")
+        .transition()
+        .duration(250)
+        .ease(d3.easeCubicInOut)
+        .style("opacity", "0.0");
 }
 
 const sketch = (p5) => {
@@ -114,8 +113,8 @@ const sketch = (p5) => {
 
     p5.draw = () => {
         // Draw left eye
-        let leftX = width - 300;
-        let leftY = 50;
+        let leftX = width / 2 - 150;
+        let leftY = height / 2 - 250;
 
         // Calculate angle between left eye and mouse
         let leftAngle = p5.atan2(mouseY - leftY, mouseX - leftX);
@@ -130,8 +129,8 @@ const sketch = (p5) => {
         p5.pop();
 
         // Draw right eye
-        let rightX = width - 100;
-        let rightY = 50;
+        let rightX = width / 2 + 150;
+        let rightY = height / 2 - 250;
 
         // Calculate angle between right eye and angle
         let rightAngle = p5.atan2(mouseY - rightY, mouseX - rightX);
@@ -150,29 +149,27 @@ const sketch = (p5) => {
 
 <svelte:window on:mousemove={mousemove} />
 
-<div id="box" style="position: absolute; width: {width}px; height: {height}px;"></div>
+<div>
+    <div id="cube" class="absolute w-full h-full"></div>
 
-<div class="intro" bind:clientWidth={width} bind:clientHeight={height} style="transform: translateZ( -200px ) perspective( 600px ) rotateY( {degY}deg ) rotateX( {degX}deg );">
-    <div class="item">I'm Shu</div>
-    <div class="item">an AI engineer</div>
-    <div class="item">I make things</div>
-    <div class="item">with magic</div>
+    <div id="eyes" class="absolute w-full h-full">
+        <P5 {sketch} />
+    </div>
+
+    <div class="flex flex-col perspective-near" bind:clientWidth={width} bind:clientHeight={height}>
+        <div class="item">I'm Shu</div>
+        <div class="item" on:mouseover={mouseover} on:mouseleave={mouseleave}>an AI engineer</div>
+        <div class="item">I make things</div>
+        <div class="item">with magic</div>
+    </div>
 </div>
 
-<P5 {sketch} />
-
 <style>
-    .intro {
-        perspective: 800px;
-        /* width: 100%; */
-        /* height: 100%; */
-        /* overflow: hidden; */
-    }
     .item {
+        font-family: "Gill Sans";
         font-size: 12vw;
         font-weight: bold;
         line-height: 12vw;
-        color: left;
         text-align: left;
         transform-origin: left;
         transform: rotateY(40deg);
