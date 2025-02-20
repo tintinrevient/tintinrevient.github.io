@@ -42,7 +42,7 @@
 
                     case "progress":
                         // load model file - in progress
-                        document.querySelector("#loading").textContent = `Loading ${e.data.file} ${(e.data.total / Math.pow(1024, 3)).toFixed(2)} GB ${e.data.progress}%`;
+                        document.querySelector("#loading").textContent = `Loading ${e.data.file} ${(e.data.total / Math.pow(1024, 3)).toFixed(2)} GB ${e.data.progress.toFixed(2)}%`;
 
                         break;
 
@@ -134,7 +134,7 @@
                 }
             }}
             class="w-[550px] px-3 py-3 rounded-full bg-transparent text-gray-500 border"
-            placeholder="Type your message..."
+            placeholder="Type your message and press enter..."
         />
 
         <button 
