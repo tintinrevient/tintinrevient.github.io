@@ -134,7 +134,7 @@
                 }
             }}
             class="w-[550px] px-3 py-3 rounded-full bg-transparent text-gray-500 border"
-            placeholder="Type your message and press enter..."
+            placeholder="Brainstorm with me and press enter..."
         />
 
         <button 

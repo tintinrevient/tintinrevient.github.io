@@ -10,7 +10,7 @@
 	</div>
 
 	<div class="basis-1/6">
-		<div class="py-5 mx-8 mx-auto">
+		<div class="py-5 mx-8 mx-auto invisible md:visible">
 			<Chat />
 		</div>
 	</div>
