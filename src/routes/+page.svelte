@@ -6,7 +6,6 @@ import { select } from 'd3-selection';
 import { drawMouth } from '$lib/mouth';
 import { drawTree } from '$lib/tree';
 import { jsonToHierarchy } from '$lib/hierarchy';
-import Chat from '$lib/Chat.svelte';
 
 let mouseX = $state();
 let mouseY = $state();
@@ -114,9 +113,8 @@ const mouseleave = () => {
         <div class="item">I make things</div>
         <div class="item">with magic</div>
     </div>
-</div>
 
-<Chat />
+</div>
 
 <style>
     .item {
