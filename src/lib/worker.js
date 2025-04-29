@@ -4,7 +4,26 @@ import {
   TextStreamer,
   InterruptableStoppingCriteria,
 } from "@huggingface/transformers";
-  
+
+/**
+ * Helper function to perform feature detection for WebGPU
+ */
+// let fp16_supported = false;
+async function check() {
+  try {
+    const adapter = await navigator.gpu.requestAdapter();
+    if (!adapter) {
+      throw new Error("WebGPU is not supported (no adapter found)");
+    }
+    // fp16_supported = adapter.features.has("shader-f16")
+  } catch (e) {
+    self.postMessage({
+      status: "error",
+      data: e.toString(),
+    });
+  }
+}
+
 /**
  * This class uses the Singleton pattern to enable lazy-loading of the pipeline
  */
@@ -38,14 +57,25 @@ async function generate(messages) {
     return_dict: true,
   });
 
+  // 151648: <think>
+  // 151649: </think>
+  const [START_THINKING_TOKEN_ID, END_THINKING_TOKEN_ID] = tokenizer.encode(
+    "<think></think>",
+    { add_special_tokens: false },
+  );
+
+  let state = "thinking"; // 'thinking' or 'answering'
   let startTime;
   let numTokens = 0;
   let tps;
-  const token_callback_function = () => {
+  const token_callback_function = (tokens) => {
     startTime ??= performance.now();
 
     if (numTokens++ > 0) {
       tps = (numTokens / (performance.now() - startTime)) * 1000;
+    }
+    if (tokens[0] == END_THINKING_TOKEN_ID) {
+      state = "answering";
     }
   };
   const callback_function = (output) => {
@@ -54,6 +84,7 @@ async function generate(messages) {
       output,
       tps,
       numTokens,
+      state,
     });
   };
 
@@ -69,18 +100,21 @@ async function generate(messages) {
 
   const { past_key_values, sequences } = await model.generate({
     ...inputs,
-    // TODO: Add when model is fixed
+    // TODO: Add back when fixed
     // past_key_values: past_key_values_cache,
 
     // Sampling
     do_sample: false,
+    // repetition_penalty: 1.1,
+    // top_k: 3,
+    // temperature: 0.2,
 
-    max_new_tokens: 1024,
+    max_new_tokens: 2048,
     streamer,
     stopping_criteria,
     return_dict_in_generate: true,
   });
-  // past_key_values_cache = past_key_values;
+  past_key_values_cache = past_key_values;
 
   const decoded = tokenizer.batch_decode(sequences, {
     skip_special_tokens: true,
@@ -91,20 +125,6 @@ async function generate(messages) {
     status: "complete",
     output: decoded,
   });
-}
-
-async function check() {
-  try {
-    const adapter = await navigator.gpu.requestAdapter();
-    if (!adapter) {
-      throw new Error("WebGPU is not supported (no adapter found)");
-    }
-  } catch (e) {
-    self.postMessage({
-      status: "error",
-      data: e.toString(),
-    });
-  }
 }
 
 async function load() {
@@ -153,7 +173,7 @@ self.addEventListener("message", async (e) => {
       break;
 
     case "reset":
-      // past_key_values_cache = null;
+      past_key_values_cache = null;
       stopping_criteria.reset();
       break;
   }

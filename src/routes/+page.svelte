@@ -3,6 +3,8 @@ import P5 from 'p5-svelte';
 import { onMount } from 'svelte';
 import technologies from '$lib/data/technologies.json';
 import { select } from 'd3-selection';
+import { transition } from 'd3-transition';
+import { easeCubicInOut } from 'd3-ease';
 import { drawMouth } from '$lib/mouth';
 import { drawTree } from '$lib/tree';
 import { jsonToHierarchy } from '$lib/hierarchy';
@@ -87,12 +89,16 @@ const mousemove = (event) => {
     mouseY = event.pageY;       
 }
 
+const t = easeCubicInOut();
+
 const mouseover = () => {
-    select("#tree").style("opacity", 1);
+    select("#tree").transition(t).style("opacity", 1);
+    select("#mouth circle").transition(t).attr("r", 75);
 }
 
 const mouseleave = () => {
-    select("#tree").style("opacity", 0);
+    select("#tree").transition(t).style("opacity", 0);
+    select("#mouth circle").transition(t).attr("r", 150);
 }
 </script>
 
