@@ -6,7 +6,7 @@ import { colorScale, getRadius } from "./scales";
 
 export const drawTree = (root, descendants, leaves, width, height) => {
 
-    const margin = {top: 20, right: 100, bottom: 20, left: 20};  
+    const margin = {top: 20, right: 100, bottom: 20, left: 0};  
     const innerWidth = width / 2 - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
@@ -34,8 +34,8 @@ export const drawTree = (root, descendants, leaves, width, height) => {
             .attr("class", "tree-link")
             .attr("d", d => linkGenerator(d))
             .attr("fill", "none")
-            .attr("stroke", "gray")     
-            .attr("stroke-opacity", 0.6);
+            .attr("stroke", "gray")   
+            .attr("stroke-opacity", d => d.target.depth === 2 ? 0.3 : 0);
     
     // nodes
     const maxYears = max(leaves, d => d.data.years);

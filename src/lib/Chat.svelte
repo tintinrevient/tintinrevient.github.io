@@ -15,6 +15,7 @@
     let numTokens = $state();
 
     let error = $state();
+    let round = $state(0);
 
     let myWorker;
     let container;
@@ -79,6 +80,7 @@
                         isRunning = false;
                         input = "";
                         results = [...results, messages.join(" ")];
+                        round = round + 1;
 
                         messages = [];
 
@@ -148,7 +150,7 @@
     </div>
 
     {#each results as result}
-    <Box>
+    <Box round={round}>
         <h1>{result}</h1>
     </Box>
     {/each}

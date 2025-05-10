@@ -1,21 +1,23 @@
 <script>
 	let { children } = $props();
+	import Scrolly from "$lib/Scrolly.svelte";
 	import "../app.css";
-	import Chat from '$lib/Chat.svelte';
+	import Chat from '$lib/Chat.svelte';	
 </script>
 
 <div class="flex flex-col h-screen">
-	<div class="basis-5/6">
+	<div class="me basis-5/6">
 		{@render children()}
 	</div>
 
-	<div class="basis-1/6">
-		<div class="py-5 mx-8 mx-auto invisible md:visible">
+	<div class="me basis-1/6">
+		<div class="h-full mx-8 mx-auto invisible md:visible">
 			<Chat />
 		</div>
 	</div>
 </div>
 
-<style>
 
+<style>
+	
 </style>
