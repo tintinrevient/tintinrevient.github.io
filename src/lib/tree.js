@@ -1,6 +1,6 @@
 import { tree } from "d3-hierarchy";
 import { select } from "d3-selection";
-import { link, curveBumpX } from "d3-shape";
+import { link, curveBumpX, linkRadial } from "d3-shape";
 import { max } from "d3-array";
 import { colorScale, getRadius } from "./scales";
 
@@ -9,6 +9,7 @@ export const drawTree = (root, descendants, leaves, width, height) => {
     const margin = {top: 20, right: 100, bottom: 20, left: 0};  
     const innerWidth = width / 2 - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
+    const radius = Math.min(width, height) / 2 - 30;
 
     // layout
     const treeLayoutGenerator = tree()
@@ -21,13 +22,13 @@ export const drawTree = (root, descendants, leaves, width, height) => {
         .y(d => d.x);
 
     // graph
-    // links
     const innerChart = select("#tree")
         .append("svg")
         .attr("viewBox", `0, 0, ${width}, ${height}`)
             .append("g")
             .attr("transform", `translate(${width / 2 + margin.left}, ${margin.top})`);
 
+    // links
     innerChart.selectAll(".tree-link")
         .data(root.links())
         .join("path")

@@ -1,8 +1,7 @@
 <script>
 	let { children } = $props();
-	import Scrolly from "$lib/Scrolly.svelte";
 	import "../app.css";
-	import Chat from '$lib/Chat.svelte';	
+	import Chat from '$lib/Chat.svelte';
 </script>
 
 <div class="flex flex-col h-screen">

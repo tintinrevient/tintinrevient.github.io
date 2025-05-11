@@ -8,6 +8,17 @@
     let messages = $state([]);
     let results = $state([]);
 
+    function scrollIntoView(node, scroll) {
+        function update(scroll) {
+            if (scroll)
+            node.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        update(scroll);
+        return { update };
+    }
+
+
     let status = $state("");
 
     let isRunning = $state();
@@ -149,11 +160,24 @@
         </button>           
     </div>
 
+</div>
+
+{#if results.length > 0}
+<div id="whiteboard" use:scrollIntoView={results.length > 0}>
     {#each results as result}
     <Box round={round}>
         <h1>{result}</h1>
     </Box>
     {/each}
-
 </div>
+{/if}
 
+<style>
+    #whiteboard {
+        position:absolute;
+        height:85%;
+        width:100%;
+        z-index: 1;
+    }
+
+</style>

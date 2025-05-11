@@ -1,5 +1,8 @@
 <script>
     export let round; 
+    export let width;
+    export let height;
+    
     let moving = false;
 
     let left = 700 + round * 20;
