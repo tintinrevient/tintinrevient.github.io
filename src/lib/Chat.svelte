@@ -2,6 +2,9 @@
     import { onMount } from 'svelte';
     import Box from './Box.svelte';
 
+    let width = $state();
+	let height = $state();
+
     // generation
     let text = $state("");
     let input = $state("");
@@ -163,9 +166,9 @@
 </div>
 
 {#if results.length > 0}
-<div id="whiteboard" use:scrollIntoView={results.length > 0}>
+<div id="whiteboard" use:scrollIntoView={results.length > 0} bind:clientWidth={width} bind:clientHeight={height}>
     {#each results as result}
-    <Box round={round}>
+    <Box round={round} width={width} height={height}>
         <h1>{result}</h1>
     </Box>
     {/each}
