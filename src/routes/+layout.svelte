@@ -1,22 +1,13 @@
-<script>
-	let { children } = $props();
-	import "../app.css";
-	import Chat from '$lib/Chat.svelte';
+<script lang="ts">
+  import "../app.css";
+  import pinpon from "$lib/assets/pinpon.png";
+
+  let { children } = $props();
+
 </script>
 
-<div class="flex flex-col h-screen">
-	<div class="me basis-5/6">
-		{@render children()}
-	</div>
+<svelte:head>
+  <link rel="icon" href={pinpon} />
+</svelte:head>
 
-	<div class="me basis-1/6">
-		<div class="h-full mx-8 mx-auto invisible md:visible">
-			<Chat />
-		</div>
-	</div>
-</div>
-
-
-<style>
-	
-</style>
+{@render children?.()}

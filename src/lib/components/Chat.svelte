@@ -3,24 +3,13 @@
     import Box from './Box.svelte';
 
     let width = $state();
-	let height = $state();
+    let height = $state();
 
     // generation
     let text = $state("");
     let input = $state("");
     let messages = $state([]);
     let results = $state([]);
-
-    function scrollIntoView(node, scroll) {
-        function update(scroll) {
-            if (scroll)
-            node.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        update(scroll);
-        return { update };
-    }
-
 
     let status = $state("");
 
@@ -32,12 +21,21 @@
     let round = $state(0);
 
     let myWorker;
-    let container;
+
+    function scrollIntoView(node, scroll) {
+        function update(scroll) {
+            if (scroll)
+            node.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        update(scroll);
+        return { update };
+    }
 
     onMount(async () => {
 
         if (window.Worker) {
-            const MyWorker = await import('$lib/worker.js?worker');
+            const MyWorker = await import('$lib/utils/worker.js?worker');
             myWorker = new MyWorker.default(); 
             myWorker.postMessage({ type: "check" });
 
@@ -136,51 +134,39 @@
     });
 </script>
 
-<div bind:this={myWorker} class="flex flex-col">
-
-    <p id="loading" class="mx-auto"></p>
-
-    <div class="w-[600px] max-w-[80%] max-h-[50px] mx-auto flex">
-        <input
-            bind:value={text}
-            on:keydown={(event) => {
-                if (event.key === "Enter" && !isRunning) {
-                    event.preventDefault();
-                    input = event.currentTarget.value;
-                }
-            }}
-            class="w-[550px] px-3 py-3 rounded-full bg-transparent text-gray-500 border"
-            placeholder="Brainstorm with me and press enter..."
-        />
-
-        <button 
-            on:click={() => {
-                myWorker.postMessage({ type: "load" });
-            }}
-            class="ml-3 border px-2 py-2 rounded-full bg-red-200 text-white hover:bg-red-300 w-50"
-        >
-        Load model
-        </button>           
+<div class="h-screen flex flex-col">
+    <div use:scrollIntoView={results.length > 0} class="h-5/6 overflow-y-auto" bind:clientWidth={width} bind:clientHeight={height}>
+        {#each results as result}
+        <Box round={round} width={width} height={height}>
+            <h1>{result}</h1>
+        </Box>
+        {/each}
     </div>
 
+    <div bind:this={myWorker} class="h-1/6 flex flex-col justify-center">
+        <p id="loading" class="mx-auto"></p>
+
+        <div class="w-[600px] max-w-[80%] max-h-[50px] mx-auto flex">
+            <input
+                bind:value={text}
+                onkeydown={(event) => {
+                    if (event.key === "Enter" && !isRunning) {
+                        event.preventDefault();
+                        input = event.currentTarget.value;
+                    }
+                }}
+                class="w-[550px] px-3 py-3 rounded-full bg-transparent text-gray-500 border"
+                placeholder="Brainstorm with me and press enter..."
+            />
+
+            <button
+                onclick={() => {
+                    myWorker.postMessage({ type: "load" });
+                }}
+                class="ml-3 border px-2 py-2 rounded-full bg-red-200 text-white hover:bg-red-300 w-50"
+            >
+            Load model
+            </button>
+        </div>
+    </div>
 </div>
-
-{#if results.length > 0}
-<div id="whiteboard" use:scrollIntoView={results.length > 0} bind:clientWidth={width} bind:clientHeight={height}>
-    {#each results as result}
-    <Box round={round} width={width} height={height}>
-        <h1>{result}</h1>
-    </Box>
-    {/each}
-</div>
-{/if}
-
-<style>
-    #whiteboard {
-        position:absolute;
-        height:85%;
-        width:100%;
-        z-index: 1;
-    }
-
-</style>
