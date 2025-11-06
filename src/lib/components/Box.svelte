@@ -1,5 +1,5 @@
 <script>
-    let { round, width, height } = $props();
+    let { round, width, height, children } = $props();
     
     let left_min = 50;
     let left_max =$derived(width - 200);
@@ -55,7 +55,7 @@
                 tabindex="0"
                 ondblclick={handleDblClick}
                 contenteditable={editable}>
-        <slot />
+        {@render children?.()}
     </div>
     <button class="x rounded-full bg-red-200 text-white hover:bg-red-300" onclick={() => compRef.parentNode.removeChild(compRef)}>
         X
