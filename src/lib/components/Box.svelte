@@ -58,7 +58,7 @@
         {@render children?.()}
     </div>
     <button class="x rounded-full bg-red-200 text-white hover:bg-red-300" onclick={() => compRef.parentNode.removeChild(compRef)}>
-        X
+        &#x2716;
     </button>
 </div>
 
